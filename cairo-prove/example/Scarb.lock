@@ -2,5 +2,5 @@
 version = 1
 
 [[package]]
-name = "example"
+name = "prime_prover"
 version = "0.1.0"
