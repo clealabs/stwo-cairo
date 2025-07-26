@@ -42,7 +42,7 @@ cairo-prove prove <path-to-cairo-program> <output-proof-path> --arguments <args>
 
 Example:
 ```bash
-cairo-prove prove target/release/example.executable.json ./example_proof.json --arguments 10000
+cairo-prove prove target/release/main.executable.json ./example_proof.json --arguments 7
 ```
 
 #### Loading arguments from file
