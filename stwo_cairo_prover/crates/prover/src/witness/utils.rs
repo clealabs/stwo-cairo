@@ -17,6 +17,7 @@ use stwo_prover::core::poly::circle::CircleEvaluation;
 use stwo_prover::core::poly::BitReversedOrder;
 use stwo_prover::core::vcs::blake2_merkle::Blake2sMerkleChannel;
 use stwo_prover::core::vcs::ops::MerkleHasher;
+#[cfg(not(target_arch = "wasm32"))]
 use stwo_prover::core::vcs::poseidon252_merkle::Poseidon252MerkleChannel;
 
 use crate::witness::preprocessed_trace::generate_preprocessed_commitment_root;
@@ -165,19 +166,27 @@ pub fn export_preprocessed_roots() {
     });
 
     // Poseidon252 roots.
-    get_preprocessed_roots::<Poseidon252MerkleChannel>(
-        max_log_blowup_factor,
-        PreProcessedTraceVariant::CanonicalWithoutPedersen,
-    )
-    .into_iter()
-    .enumerate()
-    .for_each(|(i, root)| {
-        println!(
-            "log_blowup_factor: {}, poseidon root: [{:#010x}]",
-            i + 1,
-            root
-        );
-    });
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        get_preprocessed_roots::<Poseidon252MerkleChannel>(
+            max_log_blowup_factor,
+            PreProcessedTraceVariant::CanonicalWithoutPedersen,
+        )
+        .into_iter()
+        .enumerate()
+        .for_each(|(i, root)| {
+            println!(
+                "log_blowup_factor: {}, poseidon root: [{:#010x}]",
+                i + 1,
+                root
+            );
+        });
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        println!("Poseidon252 preprocessed roots are not supported on wasm32.");
+    }
 }
 
 #[cfg(test)]

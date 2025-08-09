@@ -21,6 +21,7 @@ use stwo_prover::core::pcs::PcsConfig;
 use stwo_prover::core::prover::ProvingError;
 use stwo_prover::core::vcs::blake2_merkle::Blake2sMerkleChannel;
 use stwo_prover::core::vcs::ops::MerkleHasher;
+#[cfg(not(target_arch = "wasm32"))]
 use stwo_prover::core::vcs::poseidon252_merkle::Poseidon252MerkleChannel;
 use thiserror::Error;
 use tracing::{span, Level};
@@ -134,7 +135,12 @@ fn run(args: impl Iterator<Item = String>) -> Result<(), Error> {
 
     let run_inner_fn = match channel_hash {
         ChannelHash::Blake2s => run_inner::<Blake2sMerkleChannel>,
+        #[cfg(not(target_arch = "wasm32"))]
         ChannelHash::Poseidon252 => run_inner::<Poseidon252MerkleChannel>,
+        #[cfg(target_arch = "wasm32")]
+        ChannelHash::Poseidon252 => {
+            panic!("Poseidon252 channel is not supported on wasm32");
+        }
     };
 
     run_inner_fn(
