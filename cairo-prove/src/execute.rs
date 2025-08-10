@@ -67,7 +67,7 @@ fn program_and_hints_from_executable(executable: &Executable) -> (Program, HashM
         data,
         entrypoint.offset,
         entrypoint.offset + 4,
-        hints,
+        hints.into_iter().collect(),
         Default::default(),
         Default::default(),
         vec![],

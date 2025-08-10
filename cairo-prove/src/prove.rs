@@ -63,8 +63,14 @@ pub fn prover_input_from_runner(runner: &CairoRunner) -> ProverInput {
     let public_segment_context = PublicSegmentContext::new(&main_args);
 
     info!("Generating input for the prover...");
-    let input =
-        adapt_to_stwo_input(&trace, mem, addresses, &segments, public_segment_context).unwrap();
+    let input = adapt_to_stwo_input(
+        &trace,
+        mem,
+        addresses,
+        &(segments.into_iter().collect()),
+        public_segment_context,
+    )
+    .unwrap();
     info!("Input for the prover generated successfully.");
     debug!(
         "State transitions: {}",
