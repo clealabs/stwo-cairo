@@ -191,6 +191,7 @@ pub mod tests {
 
     #[cfg(test)]
     #[cfg(feature = "nightly")]
+    #[cfg(not(target_arch = "wasm32"))]
     mod nightly_tests {
         use std::io::Write;
 
