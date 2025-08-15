@@ -16,7 +16,7 @@ use stwo_cairo_common::prover_types::cpu::{Felt252, FELT252_N_WORDS};
 use stwo_prover::constraint_framework::preprocessed_columns::PreProcessedColumnId;
 use stwo_prover::core::backend::simd::column::BaseColumn;
 use stwo_prover::core::backend::simd::m31::{PackedM31, N_LANES};
-use stwo_prover::core::backend::cpu::CpuBackend;
+use stwo_prover::core::backend::simd::SimdBackend;
 use stwo_prover::core::fields::m31::BaseField;
 use stwo_prover::core::poly::circle::{CanonicCoset, CircleEvaluation};
 use stwo_prover::core::poly::BitReversedOrder;
@@ -57,7 +57,7 @@ impl PreProcessedColumn for PedersenPoints {
         }
     }
 
-    fn gen_column_simd(&self) -> CircleEvaluation<CpuBackend, BaseField, BitReversedOrder> {
+    fn gen_column_simd(&self) -> CircleEvaluation<SimdBackend, BaseField, BitReversedOrder> {
         CircleEvaluation::new(
             CanonicCoset::new(self.log_size()).circle_domain(),
             BaseColumn::from_cpu(PEDERSEN_TABLE.column_data[self.index].clone()),

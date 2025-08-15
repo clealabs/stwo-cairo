@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use stwo_cairo_serialize::CairoSerialize;
 use stwo_prover::constraint_framework::TraceLocationAllocator;
 use stwo_prover::core::air::ComponentProver;
-use stwo_prover::core::backend::cpu::CpuBackend;
+use stwo_prover::core::backend::simd::SimdBackend;
 use stwo_prover::core::channel::Channel;
 use stwo_prover::core::fields::qm31::{SecureField, QM31};
 use stwo_prover::core::pcs::TreeVec;
@@ -839,107 +839,107 @@ impl OpcodeComponents {
         }
     }
 
-    pub fn provers(&self) -> Vec<&dyn ComponentProver<CpuBackend>> {
-        let mut vec: Vec<&dyn ComponentProver<CpuBackend>> = vec![];
+    pub fn provers(&self) -> Vec<&dyn ComponentProver<SimdBackend>> {
+        let mut vec: Vec<&dyn ComponentProver<SimdBackend>> = vec![];
         vec.extend(
             self.add
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.add_small
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.add_ap
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.assert_eq
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.assert_eq_imm
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.assert_eq_double_deref
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.blake
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.call
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.call_rel_imm
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.generic
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.jnz
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.jnz_taken
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.jump
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.jump_double_deref
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.jump_rel
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.jump_rel_imm
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.mul
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.mul_small
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.qm31
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec.extend(
             self.ret
                 .iter()
-                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+                .map(|component| component as &dyn ComponentProver<SimdBackend>),
         );
         vec
     }

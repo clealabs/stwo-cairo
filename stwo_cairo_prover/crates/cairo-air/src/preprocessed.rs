@@ -6,9 +6,9 @@ use stwo_cairo_common::preprocessed_consts::blake::N_BLAKE_SIGMA_COLS;
 use stwo_cairo_common::preprocessed_consts::poseidon::N_WORDS as POSEIDON_N_WORDS;
 use stwo_cairo_common::prover_types::simd::LOG_N_LANES;
 use stwo_prover::constraint_framework::preprocessed_columns::PreProcessedColumnId;
-use stwo_prover::core::backend::cpu::CpuBackend;
 use stwo_prover::core::backend::simd::column::BaseColumn;
 use stwo_prover::core::backend::simd::m31::{PackedM31, N_LANES};
+use stwo_prover::core::backend::simd::SimdBackend;
 use stwo_prover::core::backend::Col;
 use stwo_prover::core::fields::m31::{BaseField, M31, MODULUS_BITS};
 use stwo_prover::core::poly::circle::{CanonicCoset, CircleEvaluation};
@@ -27,7 +27,7 @@ pub const MAX_SEQUENCE_LOG_SIZE: u32 = 24;
 pub trait PreProcessedColumn {
     fn log_size(&self) -> u32;
     fn id(&self) -> PreProcessedColumnId;
-    fn gen_column_simd(&self) -> CircleEvaluation<CpuBackend, BaseField, BitReversedOrder>;
+    fn gen_column_simd(&self) -> CircleEvaluation<SimdBackend, BaseField, BitReversedOrder>;
 }
 
 /// A collection of preprocessed columns, whose values are publicly acknowledged, and independent of
@@ -81,7 +81,7 @@ impl PreProcessedTrace {
         self.columns.iter().map(|c| c.log_size()).collect()
     }
 
-    pub fn gen_trace(&self) -> Vec<CircleEvaluation<CpuBackend, BaseField, BitReversedOrder>> {
+    pub fn gen_trace(&self) -> Vec<CircleEvaluation<SimdBackend, BaseField, BitReversedOrder>> {
         self.columns.iter().map(|c| c.gen_column_simd()).collect()
     }
 
@@ -171,9 +171,10 @@ impl PreProcessedColumn for Seq {
     fn log_size(&self) -> u32 {
         self.log_size
     }
-    fn gen_column_simd(&self) -> CircleEvaluation<CpuBackend, BaseField, BitReversedOrder> {
-        let col =
-            Col::<CpuBackend, BaseField>::from_iter((0..(1 << self.log_size)).map(BaseField::from));
+    fn gen_column_simd(&self) -> CircleEvaluation<SimdBackend, BaseField, BitReversedOrder> {
+        let col = Col::<SimdBackend, BaseField>::from_iter(
+            (0..(1 << self.log_size)).map(BaseField::from),
+        );
         CircleEvaluation::new(CanonicCoset::new(self.log_size).circle_domain(), col)
     }
     fn id(&self) -> PreProcessedColumnId {
@@ -222,7 +223,7 @@ impl PreProcessedColumn for BitwiseXor {
         2 * self.n_bits
     }
 
-    fn gen_column_simd(&self) -> CircleEvaluation<CpuBackend, BaseField, BitReversedOrder> {
+    fn gen_column_simd(&self) -> CircleEvaluation<SimdBackend, BaseField, BitReversedOrder> {
         CircleEvaluation::new(
             CanonicCoset::new(self.log_size()).circle_domain(),
             BaseColumn::from_simd(
@@ -296,7 +297,7 @@ impl<const N: usize> PreProcessedColumn for RangeCheck<N> {
         self.ranges.iter().sum()
     }
 
-    fn gen_column_simd(&self) -> CircleEvaluation<CpuBackend, BaseField, BitReversedOrder> {
+    fn gen_column_simd(&self) -> CircleEvaluation<SimdBackend, BaseField, BitReversedOrder> {
         let partitions = generate_partitioned_enumeration(self.ranges);
         let column = partitions.into_iter().nth(self.column_idx).unwrap();
         CircleEvaluation::new(

@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use stwo_cairo_serialize::CairoSerialize;
 use stwo_prover::constraint_framework::TraceLocationAllocator;
 use stwo_prover::core::air::ComponentProver;
-use stwo_prover::core::backend::cpu::CpuBackend;
+use stwo_prover::core::backend::simd::SimdBackend;
 use stwo_prover::core::channel::Channel;
 use stwo_prover::core::fields::qm31::{SecureField, QM31};
 use stwo_prover::core::pcs::TreeVec;
@@ -277,22 +277,22 @@ impl RangeChecksComponents {
         }
     }
 
-    pub fn provers(&self) -> Vec<&dyn ComponentProver<CpuBackend>> {
+    pub fn provers(&self) -> Vec<&dyn ComponentProver<SimdBackend>> {
         vec![
-            &self.rc_6 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_8 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_11 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_12 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_18 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_19 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_4_3 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_4_4 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_5_4 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_9_9 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_7_2_5 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_3_6_6_3 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_4_4_4_4 as &dyn ComponentProver<CpuBackend>,
-            &self.rc_3_3_3_3_3 as &dyn ComponentProver<CpuBackend>,
+            &self.rc_6 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_8 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_11 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_12 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_18 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_19 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_4_3 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_4_4 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_5_4 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_9_9 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_7_2_5 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_3_6_6_3 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_4_4_4_4 as &dyn ComponentProver<SimdBackend>,
+            &self.rc_3_3_3_3_3 as &dyn ComponentProver<SimdBackend>,
         ]
     }
 }
