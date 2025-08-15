@@ -14,7 +14,7 @@ use stwo_cairo_prover::prover::{
 use stwo_cairo_serialize::CairoSerialize;
 use stwo_cairo_utils::binary_utils::run_binary;
 use stwo_cairo_utils::file_utils::{create_file, read_to_string, IoErrorWithPath};
-use stwo_prover::core::backend::simd::SimdBackend;
+use stwo_prover::core::backend::cpu::CpuBackend;
 use stwo_prover::core::backend::BackendForChannel;
 use stwo_prover::core::channel::MerkleChannel;
 use stwo_prover::core::pcs::PcsConfig;
@@ -167,7 +167,7 @@ fn run_inner<MC: MerkleChannel>(
     proof_format: ProofFormat,
 ) -> Result<(), Error>
 where
-    SimdBackend: BackendForChannel<MC>,
+    CpuBackend: BackendForChannel<MC>,
     MC::H: Serialize,
     <MC::H as MerkleHasher>::Hash: CairoSerialize,
 {

@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use stwo_cairo_serialize::CairoSerialize;
 use stwo_prover::constraint_framework::TraceLocationAllocator;
 use stwo_prover::core::air::ComponentProver;
-use stwo_prover::core::backend::simd::SimdBackend;
+use stwo_prover::core::backend::cpu::CpuBackend;
 use stwo_prover::core::channel::Channel;
 use stwo_prover::core::fields::qm31::QM31;
 use stwo_prover::core::pcs::TreeVec;
@@ -161,7 +161,7 @@ impl BlakeContextComponents {
         Self { components }
     }
 
-    pub fn provers(&self) -> Vec<&dyn ComponentProver<SimdBackend>> {
+    pub fn provers(&self) -> Vec<&dyn ComponentProver<CpuBackend>> {
         self.components
             .as_ref()
             .map(|c| c.provers())
@@ -274,7 +274,7 @@ impl Components {
         }
     }
 
-    pub fn provers(&self) -> Vec<&dyn ComponentProver<SimdBackend>> {
+    pub fn provers(&self) -> Vec<&dyn ComponentProver<CpuBackend>> {
         vec![
             &self.blake_round,
             &self.blake_g,

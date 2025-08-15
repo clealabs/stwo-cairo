@@ -19,7 +19,7 @@ impl ClaimGenerator {
 
     pub fn write_trace(
         mut self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         verify_bitwise_xor_8_state: &verify_bitwise_xor_8::ClaimGenerator,
     ) -> (Claim, InteractionClaimGenerator) {
         assert!(!self.packed_inputs.is_empty());
@@ -322,7 +322,7 @@ pub struct InteractionClaimGenerator {
 impl InteractionClaimGenerator {
     pub fn write_interaction_trace(
         self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         triple_xor_32: &relations::TripleXor32,
         verify_bitwise_xor_8: &relations::VerifyBitwiseXor_8,
     ) -> InteractionClaim {

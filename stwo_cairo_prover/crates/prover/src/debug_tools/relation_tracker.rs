@@ -7,7 +7,7 @@ use stwo_prover::constraint_framework::relation_tracker::{
     add_to_relation_entries, RelationSummary, RelationTrackerEntry,
 };
 use stwo_prover::constraint_framework::{FrameworkComponent, FrameworkEval};
-use stwo_prover::core::backend::simd::SimdBackend;
+use stwo_prover::core::backend::cpu::CpuBackend;
 use stwo_prover::core::backend::{BackendForChannel, Column};
 use stwo_prover::core::channel::MerkleChannel;
 use stwo_prover::core::fields::m31::M31;
@@ -15,24 +15,24 @@ use stwo_prover::core::pcs::{CommitmentSchemeProver, TreeVec};
 use stwo_prover::core::poly::circle::CanonicCoset;
 
 pub fn track_and_summarize_cairo_relations<MC: MerkleChannel>(
-    commitment_scheme: &CommitmentSchemeProver<'_, SimdBackend, MC>,
+    commitment_scheme: &CommitmentSchemeProver<'_, CpuBackend, MC>,
     components: &CairoComponents,
     public_data: &PublicData,
 ) -> RelationSummary
 where
-    SimdBackend: BackendForChannel<MC>,
+    CpuBackend: BackendForChannel<MC>,
 {
     let entries = track_cairo_relations(commitment_scheme, components, public_data);
     RelationSummary::summarize_relations(&entries).cleaned()
 }
 
 pub fn track_cairo_relations<MC: MerkleChannel>(
-    commitment_scheme: &CommitmentSchemeProver<'_, SimdBackend, MC>,
+    commitment_scheme: &CommitmentSchemeProver<'_, CpuBackend, MC>,
     components: &CairoComponents,
     public_data: &PublicData,
 ) -> Vec<RelationTrackerEntry>
 where
-    SimdBackend: BackendForChannel<MC>,
+    CpuBackend: BackendForChannel<MC>,
 {
     // Cairo air aggregates interpolated polynomials. Evaluate to get the original trace.
     // NOTE: this process is slow, and should be only used for debugging.

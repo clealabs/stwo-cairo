@@ -1,7 +1,7 @@
 use cairo_air::air::CairoInteractionElements;
 use cairo_air::opcodes_air::{OpcodeClaim, OpcodeInteractionClaim};
 use stwo_cairo_adapter::opcodes::StateTransitions;
-use stwo_prover::core::backend::simd::SimdBackend;
+use stwo_prover::core::backend::cpu::CpuBackend;
 
 use super::blake_context::BlakeContextClaimGenerator;
 use super::range_checks::RangeChecksClaimGenerator;
@@ -194,7 +194,7 @@ impl OpcodesClaimGenerator {
 
     pub fn write_trace(
         self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         blake_context_trace_generator: &mut BlakeContextClaimGenerator,
         memory_address_to_id_trace_generator: &memory_address_to_id::ClaimGenerator,
         memory_id_to_value_trace_generator: &memory_id_to_big::ClaimGenerator,
@@ -527,7 +527,7 @@ pub struct OpcodesInteractionClaimGenerator {
 impl OpcodesInteractionClaimGenerator {
     pub fn write_interaction_trace(
         self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         interaction_elements: &CairoInteractionElements,
     ) -> OpcodeInteractionClaim {
         let add_interaction_claims = self

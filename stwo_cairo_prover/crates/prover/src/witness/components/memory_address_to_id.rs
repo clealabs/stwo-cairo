@@ -15,7 +15,7 @@ use stwo_prover::constraint_framework::logup::LogupTraceGenerator;
 use stwo_prover::constraint_framework::Relation;
 use stwo_prover::core::backend::simd::m31::{PackedBaseField, PackedM31, LOG_N_LANES, N_LANES};
 use stwo_prover::core::backend::simd::qm31::PackedQM31;
-use stwo_prover::core::backend::simd::SimdBackend;
+use stwo_prover::core::backend::cpu::CpuBackend;
 use stwo_prover::core::backend::{Col, Column};
 use stwo_prover::core::fields::m31::{BaseField, M31};
 use stwo_prover::core::poly::circle::{CanonicCoset, CircleEvaluation};
@@ -120,7 +120,7 @@ impl ClaimGenerator {
 
     pub fn write_trace(
         mut self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
     ) -> (Claim, InteractionClaimGenerator) {
         let size = std::cmp::max(
             (self
@@ -132,7 +132,7 @@ impl ClaimGenerator {
         );
         let n_packed_rows = size.div_ceil(N_LANES);
         let mut trace: [_; N_TRACE_COLUMNS] =
-            std::array::from_fn(|_| Col::<SimdBackend, M31>::zeros(size));
+            std::array::from_fn(|_| Col::<CpuBackend, M31>::zeros(size));
 
         // Pad to a multiple of `N_LANES`.
         let next_multiple_of_16 = self.address_to_raw_id.len().next_multiple_of(16);
@@ -163,7 +163,7 @@ impl ClaimGenerator {
         let trace = trace
             .into_iter()
             .map(|eval| {
-                CircleEvaluation::<SimdBackend, BaseField, BitReversedOrder>::new(domain, eval)
+                CircleEvaluation::<CpuBackend, BaseField, BitReversedOrder>::new(domain, eval)
             })
             .collect_vec();
         tree_builder.extend_evals(trace);
@@ -185,7 +185,7 @@ pub struct InteractionClaimGenerator {
 impl InteractionClaimGenerator {
     pub fn write_interaction_trace(
         self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         lookup_elements: &relations::MemoryAddressToId,
     ) -> InteractionClaim {
         let packed_size = self.ids[0].len();

@@ -4,7 +4,7 @@ use cairo_air::{CairoProof, PreProcessedTraceVariant};
 use num_traits::Zero;
 use serde::{Deserialize, Serialize};
 use stwo_cairo_adapter::ProverInput;
-use stwo_prover::core::backend::simd::SimdBackend;
+use stwo_prover::core::backend::cpu::CpuBackend;
 use stwo_prover::core::backend::BackendForChannel;
 use stwo_prover::core::channel::{Channel, MerkleChannel};
 use stwo_prover::core::fields::qm31::SecureField;
@@ -26,12 +26,12 @@ pub fn prove_cairo<MC: MerkleChannel>(
     preprocessed_trace: PreProcessedTraceVariant,
 ) -> Result<CairoProof<MC::H>, ProvingError>
 where
-    SimdBackend: BackendForChannel<MC>,
+    CpuBackend: BackendForChannel<MC>,
 {
     let _span = span!(Level::INFO, "prove_cairo").entered();
     // Composition polynomial domain log size is LOG_MAX_ROWS + 1, double it
     // because we compute on a half-coset, and account for blowup factor.
-    let twiddles = SimdBackend::precompute_twiddles(
+    let twiddles = CpuBackend::precompute_twiddles(
         CanonicCoset::new(LOG_MAX_ROWS + pcs_config.fri_config.log_blowup_factor + 2)
             .circle_domain()
             .half_coset,
@@ -41,7 +41,7 @@ where
     let channel = &mut MC::C::default();
     pcs_config.mix_into(channel);
     let mut commitment_scheme =
-        CommitmentSchemeProver::<SimdBackend, MC>::new(pcs_config, &twiddles);
+        CommitmentSchemeProver::<CpuBackend, MC>::new(pcs_config, &twiddles);
 
     // Preprocessed trace.
     let preprocessed_trace = preprocessed_trace.to_preprocessed_trace();
@@ -61,7 +61,7 @@ where
     tree_builder.commit(channel);
 
     // Draw interaction elements.
-    let interaction_pow = SimdBackend::grind(channel, INTERACTION_POW_BITS);
+    let interaction_pow = CpuBackend::grind(channel, INTERACTION_POW_BITS);
     channel.mix_u64(interaction_pow);
     let interaction_elements = CairoInteractionElements::draw(channel);
 
@@ -109,7 +109,7 @@ where
 
     // Prove stark.
     let span = span!(Level::INFO, "Prove STARKs").entered();
-    let proof = prove::<SimdBackend, _>(&components, channel, commitment_scheme)?;
+    let proof = prove::<CpuBackend, _>(&components, channel, commitment_scheme)?;
     span.exit();
 
     event!(name: "component_info", Level::DEBUG, "Components: {}", component_builder);

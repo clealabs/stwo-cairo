@@ -59,7 +59,7 @@ macro_rules! range_check_prover {
 
                 pub fn write_trace(
                     self,
-                    tree_builder: &mut impl TreeBuilder<SimdBackend>,
+                    tree_builder: &mut impl TreeBuilder<CpuBackend>,
                 ) -> (Claim, InteractionClaimGenerator) {
                     let log_size = self.log_size();
 
@@ -69,7 +69,7 @@ macro_rules! range_check_prover {
                     let domain = CanonicCoset::new(log_size).circle_domain();
                     let trace = [multiplicity_column]
                         .map(|col|
-                            CircleEvaluation::<SimdBackend, M31, BitReversedOrder>::new(domain, col)
+                            CircleEvaluation::<CpuBackend, M31, BitReversedOrder>::new(domain, col)
                         );
 
                     tree_builder.extend_evals(trace);
@@ -91,7 +91,7 @@ macro_rules! range_check_prover {
             impl InteractionClaimGenerator {
                 pub fn write_interaction_trace(
                     &self,
-                    tree_builder: &mut impl TreeBuilder<SimdBackend>,
+                    tree_builder: &mut impl TreeBuilder<CpuBackend>,
                     lookup_elements: &relations::[<RangeCheck_$($log_range)_*>],
                 ) -> InteractionClaim {
                     let log_size = RANGES.iter().sum::<u32>();
@@ -174,7 +174,7 @@ mod tests {
     };
     use stwo_prover::core::backend::simd::column::BaseColumn;
     use stwo_prover::core::backend::simd::m31::PackedM31;
-    use stwo_prover::core::backend::simd::SimdBackend;
+    use stwo_prover::core::backend::cpu::CpuBackend;
     use stwo_prover::core::channel::Blake2sChannel;
     use stwo_prover::core::fields::m31::M31;
     use stwo_prover::core::pcs::{CommitmentSchemeProver, PcsConfig};
@@ -190,7 +190,7 @@ mod tests {
         let log_ranges = [7, 2, 5];
         let claim_generator = range_check_7_2_5::ClaimGenerator::new();
 
-        let twiddles = SimdBackend::precompute_twiddles(
+        let twiddles = CpuBackend::precompute_twiddles(
             CanonicCoset::new(LOG_HEIGHT + LOG_BLOWUP_FACTOR)
                 .circle_domain()
                 .half_coset,
@@ -199,7 +199,7 @@ mod tests {
         let channel = &mut Blake2sChannel::default();
         let config = PcsConfig::default();
         let commitment_scheme =
-            &mut CommitmentSchemeProver::<SimdBackend, Blake2sMerkleChannel>::new(
+            &mut CommitmentSchemeProver::<CpuBackend, Blake2sMerkleChannel>::new(
                 config, &twiddles,
             );
 

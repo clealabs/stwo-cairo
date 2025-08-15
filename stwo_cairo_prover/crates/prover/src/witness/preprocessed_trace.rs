@@ -1,5 +1,5 @@
 use cairo_air::PreProcessedTraceVariant;
-use stwo_prover::core::backend::simd::SimdBackend;
+use stwo_prover::core::backend::cpu::CpuBackend;
 use stwo_prover::core::backend::BackendForChannel;
 use stwo_prover::core::channel::MerkleChannel;
 use stwo_prover::core::pcs::CommitmentTreeProver;
@@ -14,21 +14,21 @@ pub fn generate_preprocessed_commitment_root<MC: MerkleChannel>(
     preprocessed_trace: PreProcessedTraceVariant,
 ) -> <<MC as MerkleChannel>::H as MerkleHasher>::Hash
 where
-    SimdBackend: BackendForChannel<MC>,
+    CpuBackend: BackendForChannel<MC>,
 {
     let preprocessed_trace = preprocessed_trace.to_preprocessed_trace();
 
     // Precompute twiddles for the commitment scheme.
     let max_log_size = preprocessed_trace.log_sizes().into_iter().max().unwrap();
-    let twiddles = SimdBackend::precompute_twiddles(
+    let twiddles = CpuBackend::precompute_twiddles(
         CanonicCoset::new(max_log_size + log_blowup_factor)
             .circle_domain()
             .half_coset,
     );
 
     // Generate the commitment tree.
-    let polys = SimdBackend::interpolate_columns(preprocessed_trace.gen_trace(), &twiddles);
-    let commitment_scheme = CommitmentTreeProver::<SimdBackend, MC>::new(
+    let polys = CpuBackend::interpolate_columns(preprocessed_trace.gen_trace(), &twiddles);
+    let commitment_scheme = CommitmentTreeProver::<CpuBackend, MC>::new(
         polys,
         log_blowup_factor,
         &mut MC::C::default(),

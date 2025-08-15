@@ -116,7 +116,7 @@ impl ClaimGenerator {
 
     pub fn write_trace(
         self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         range_check_9_9_trace_generator: &range_check_9_9::ClaimGenerator,
         log_max_big_size: u32,
     ) -> (Claim, InteractionClaimGenerator) {
@@ -167,7 +167,7 @@ impl ClaimGenerator {
             let trace = big_table_trace
                 .into_iter()
                 .map(|eval| {
-                    CircleEvaluation::<SimdBackend, M31, BitReversedOrder>::new(
+                    CircleEvaluation::<CpuBackend, M31, BitReversedOrder>::new(
                         CanonicCoset::new(big_log_size).circle_domain(),
                         eval,
                     )
@@ -179,7 +179,7 @@ impl ClaimGenerator {
         let trace = small_table_trace
             .into_iter()
             .map(|eval| {
-                CircleEvaluation::<SimdBackend, M31, BitReversedOrder>::new(
+                CircleEvaluation::<CpuBackend, M31, BitReversedOrder>::new(
                     CanonicCoset::new(small_log_size).circle_domain(),
                     eval,
                 )
@@ -299,7 +299,7 @@ pub struct InteractionClaimGenerator {
 impl InteractionClaimGenerator {
     pub fn write_interaction_trace(
         self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         lookup_elements: &relations::MemoryIdToBig,
         range9_9_lookup_elements: &relations::RangeCheck_9_9,
     ) -> InteractionClaim {
@@ -341,7 +341,7 @@ impl InteractionClaimGenerator {
         lookup_elements: &relations::MemoryIdToBig,
         range9_9_lookup_elements: &relations::RangeCheck_9_9,
     ) -> (
-        Vec<CircleEvaluation<SimdBackend, M31, BitReversedOrder>>,
+        Vec<CircleEvaluation<CpuBackend, M31, BitReversedOrder>>,
         QM31,
     ) {
         assert!(big_components_values
@@ -393,7 +393,7 @@ impl InteractionClaimGenerator {
         lookup_elements: &relations::MemoryIdToBig,
         range9_9_lookup_elements: &relations::RangeCheck_9_9,
     ) -> (
-        Vec<CircleEvaluation<SimdBackend, M31, BitReversedOrder>>,
+        Vec<CircleEvaluation<CpuBackend, M31, BitReversedOrder>>,
         QM31,
     ) {
         let small_table_log_size = self.small_values[0].len().ilog2() + LOG_N_LANES;

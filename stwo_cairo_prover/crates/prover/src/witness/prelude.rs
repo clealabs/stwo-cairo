@@ -17,7 +17,7 @@ pub use stwo_prover::core::backend::simd::column::BaseColumn;
 pub use stwo_prover::core::backend::simd::conversion::Unpack;
 pub use stwo_prover::core::backend::simd::m31::{PackedM31, LOG_N_LANES, N_LANES};
 pub use stwo_prover::core::backend::simd::qm31::PackedQM31;
-pub use stwo_prover::core::backend::simd::SimdBackend;
+pub use stwo_prover::core::backend::cpu::CpuBackend;
 pub use stwo_prover::core::backend::Column;
 pub use stwo_prover::core::fields::m31::M31;
 pub use stwo_prover::core::fields::FieldExpOps;

@@ -1,7 +1,7 @@
 use num_traits::Zero;
 use stwo_prover::constraint_framework::TraceLocationAllocator;
 use stwo_prover::core::air::ComponentProver;
-use stwo_prover::core::backend::simd::SimdBackend;
+use stwo_prover::core::backend::cpu::CpuBackend;
 use stwo_prover::core::fields::qm31::QM31;
 
 use crate::air::{accumulate_relation_uses, CairoInteractionElements, RelationUsesDict};
@@ -165,7 +165,7 @@ impl PoseidonContextComponents {
         Self { components }
     }
 
-    pub fn provers(&self) -> Vec<&dyn ComponentProver<SimdBackend>> {
+    pub fn provers(&self) -> Vec<&dyn ComponentProver<CpuBackend>> {
         self.components
             .as_ref()
             .map(|c| c.provers())
@@ -287,7 +287,7 @@ impl Components {
         }
     }
 
-    pub fn provers(&self) -> Vec<&dyn ComponentProver<SimdBackend>> {
+    pub fn provers(&self) -> Vec<&dyn ComponentProver<CpuBackend>> {
         vec![
             &self.poseidon_3_partial_rounds_chain,
             &self.poseidon_full_round_chain,

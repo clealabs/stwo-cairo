@@ -4,7 +4,7 @@ use stwo_cairo_common::preprocessed_consts::blake::{
 use stwo_cairo_common::prover_types::cpu::M31;
 use stwo_prover::constraint_framework::preprocessed_columns::PreProcessedColumnId;
 use stwo_prover::core::backend::simd::column::BaseColumn;
-use stwo_prover::core::backend::simd::SimdBackend;
+use stwo_prover::core::backend::cpu::CpuBackend;
 use stwo_prover::core::fields::m31::BaseField;
 use stwo_prover::core::poly::circle::{CanonicCoset, CircleEvaluation};
 use stwo_prover::core::poly::BitReversedOrder;
@@ -41,7 +41,7 @@ impl PreProcessedColumn for BlakeSigma {
         LOG_N_ROWS
     }
 
-    fn gen_column_simd(&self) -> CircleEvaluation<SimdBackend, BaseField, BitReversedOrder> {
+    fn gen_column_simd(&self) -> CircleEvaluation<CpuBackend, BaseField, BitReversedOrder> {
         CircleEvaluation::new(
             CanonicCoset::new(LOG_N_ROWS).circle_domain(),
             BaseColumn::from_iter(pad(sigma_m31, N_BLAKE_ROUNDS, self.col)),

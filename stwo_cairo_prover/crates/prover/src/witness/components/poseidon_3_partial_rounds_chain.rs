@@ -28,7 +28,7 @@ impl ClaimGenerator {
 
     pub fn write_trace(
         mut self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         cube_252_state: &mut cube_252::ClaimGenerator,
         poseidon_round_keys_state: &poseidon_round_keys::ClaimGenerator,
         range_check_4_4_state: &range_check_4_4::ClaimGenerator,
@@ -1469,7 +1469,7 @@ pub struct InteractionClaimGenerator {
 impl InteractionClaimGenerator {
     pub fn write_interaction_trace(
         self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         cube_252: &relations::Cube252,
         poseidon_3_partial_rounds_chain: &relations::Poseidon3PartialRoundsChain,
         poseidon_round_keys: &relations::PoseidonRoundKeys,

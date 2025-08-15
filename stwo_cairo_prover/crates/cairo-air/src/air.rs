@@ -8,7 +8,7 @@ use stwo_cairo_serialize::CairoSerialize;
 use stwo_prover::constraint_framework::preprocessed_columns::PreProcessedColumnId;
 use stwo_prover::constraint_framework::{Relation, TraceLocationAllocator};
 use stwo_prover::core::air::{Component, ComponentProver};
-use stwo_prover::core::backend::simd::SimdBackend;
+use stwo_prover::core::backend::cpu::CpuBackend;
 use stwo_prover::core::channel::Channel;
 use stwo_prover::core::fields::m31::M31;
 use stwo_prover::core::fields::qm31::{SecureField, QM31};
@@ -733,26 +733,26 @@ impl CairoComponents {
         }
     }
 
-    pub fn provers(&self) -> Vec<&dyn ComponentProver<SimdBackend>> {
+    pub fn provers(&self) -> Vec<&dyn ComponentProver<CpuBackend>> {
         chain!(
             self.opcodes.provers(),
-            [&self.verify_instruction as &dyn ComponentProver<SimdBackend>,],
+            [&self.verify_instruction as &dyn ComponentProver<CpuBackend>,],
             self.blake_context.provers(),
             self.builtins.provers(),
             self.pedersen_context.provers(),
             self.poseidon_context.provers(),
-            [&self.memory_address_to_id as &dyn ComponentProver<SimdBackend>,],
+            [&self.memory_address_to_id as &dyn ComponentProver<CpuBackend>,],
             self.memory_id_to_value
                 .0
                 .iter()
-                .map(|component| component as &dyn ComponentProver<SimdBackend>),
-            [&self.memory_id_to_value.1 as &dyn ComponentProver<SimdBackend>,],
+                .map(|component| component as &dyn ComponentProver<CpuBackend>),
+            [&self.memory_id_to_value.1 as &dyn ComponentProver<CpuBackend>,],
             self.range_checks.provers(),
             [
-                &self.verify_bitwise_xor_4 as &dyn ComponentProver<SimdBackend>,
-                &self.verify_bitwise_xor_7 as &dyn ComponentProver<SimdBackend>,
-                &self.verify_bitwise_xor_8 as &dyn ComponentProver<SimdBackend>,
-                &self.verify_bitwise_xor_9 as &dyn ComponentProver<SimdBackend>,
+                &self.verify_bitwise_xor_4 as &dyn ComponentProver<CpuBackend>,
+                &self.verify_bitwise_xor_7 as &dyn ComponentProver<CpuBackend>,
+                &self.verify_bitwise_xor_8 as &dyn ComponentProver<CpuBackend>,
+                &self.verify_bitwise_xor_9 as &dyn ComponentProver<CpuBackend>,
             ]
         )
         .collect()

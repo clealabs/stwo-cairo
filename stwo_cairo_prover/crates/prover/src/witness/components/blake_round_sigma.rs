@@ -23,14 +23,14 @@ impl ClaimGenerator {
 
     pub fn write_trace(
         self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
     ) -> (Claim, InteractionClaimGenerator) {
         let mults = self.mults.into_simd_vec();
         let multiplicity_column = BaseColumn::from_simd(mults.clone());
 
         let domain = CanonicCoset::new(LOG_SIZE).circle_domain();
         let trace = [multiplicity_column]
-            .map(|col| CircleEvaluation::<SimdBackend, M31, BitReversedOrder>::new(domain, col));
+            .map(|col| CircleEvaluation::<CpuBackend, M31, BitReversedOrder>::new(domain, col));
         let lookup_data = LookupData { mults };
 
         tree_builder.extend_evals(trace);
@@ -62,7 +62,7 @@ pub struct InteractionClaimGenerator {
 impl InteractionClaimGenerator {
     pub fn write_interaction_trace(
         self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         blake_round_sigma: &relations::BlakeRoundSigma,
     ) -> InteractionClaim {
         let mut logup_gen = LogupTraceGenerator::new(LOG_SIZE);

@@ -1,7 +1,7 @@
 use cairo_air::range_checks_air::{
     RangeChecksClaim, RangeChecksInteractionClaim, RangeChecksInteractionElements,
 };
-use stwo_prover::core::backend::simd::SimdBackend;
+use stwo_prover::core::backend::cpu::CpuBackend;
 
 use crate::witness::components::{
     range_check_11, range_check_12, range_check_18, range_check_19, range_check_3_3_3_3_3,
@@ -53,7 +53,7 @@ impl RangeChecksClaimGenerator {
     }
     pub fn write_trace(
         self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
     ) -> (RangeChecksClaim, RangeChecksInteractionClaimGenerator) {
         let (rc_6_claim, rc_6_interaction_gen) =
             self.rc_6_trace_generator.write_trace(tree_builder);
@@ -139,7 +139,7 @@ pub struct RangeChecksInteractionClaimGenerator {
 impl RangeChecksInteractionClaimGenerator {
     pub fn write_interaction_trace(
         self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         interaction_elements: &RangeChecksInteractionElements,
     ) -> RangeChecksInteractionClaim {
         let rc_6_interaction_claim = self

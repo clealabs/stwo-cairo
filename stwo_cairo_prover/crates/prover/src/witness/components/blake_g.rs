@@ -22,7 +22,7 @@ impl ClaimGenerator {
 
     pub fn write_trace(
         mut self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         verify_bitwise_xor_12_state: &verify_bitwise_xor_12::ClaimGenerator,
         verify_bitwise_xor_4_state: &verify_bitwise_xor_4::ClaimGenerator,
         verify_bitwise_xor_7_state: &verify_bitwise_xor_7::ClaimGenerator,
@@ -721,7 +721,7 @@ pub struct InteractionClaimGenerator {
 impl InteractionClaimGenerator {
     pub fn write_interaction_trace(
         self,
-        tree_builder: &mut impl TreeBuilder<SimdBackend>,
+        tree_builder: &mut impl TreeBuilder<CpuBackend>,
         blake_g: &relations::BlakeG,
         verify_bitwise_xor_12: &relations::VerifyBitwiseXor_12,
         verify_bitwise_xor_4: &relations::VerifyBitwiseXor_4,
