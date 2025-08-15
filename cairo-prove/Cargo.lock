@@ -560,7 +560,7 @@ checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 [[package]]
 name = "cairo-air"
 version = "0.1.1"
-source = "git+https://github.com/clealabs/stwo-cairo?branch=62c3c4a-fix-wasm#6aea139caf9956fdac1841efc1289346aeaf0fc0"
+source = "git+https://github.com/clealabs/stwo-cairo?branch=62c3c4a-fix-wasm-cpu#b6361a63d5c81096c6d339bfad2a6b0f3ec988a6"
 dependencies = [
  "clap",
  "itertools 0.12.1",
@@ -3121,7 +3121,7 @@ dependencies = [
 [[package]]
 name = "stwo-cairo-adapter"
 version = "0.1.0"
-source = "git+https://github.com/clealabs/stwo-cairo?branch=62c3c4a-fix-wasm#6aea139caf9956fdac1841efc1289346aeaf0fc0"
+source = "git+https://github.com/clealabs/stwo-cairo?branch=62c3c4a-fix-wasm-cpu#b6361a63d5c81096c6d339bfad2a6b0f3ec988a6"
 dependencies = [
  "bincode 2.0.1",
  "bytemuck",
@@ -3143,7 +3143,7 @@ dependencies = [
 [[package]]
 name = "stwo-cairo-common"
 version = "0.1.0"
-source = "git+https://github.com/clealabs/stwo-cairo?branch=62c3c4a-fix-wasm#6aea139caf9956fdac1841efc1289346aeaf0fc0"
+source = "git+https://github.com/clealabs/stwo-cairo?branch=62c3c4a-fix-wasm-cpu#b6361a63d5c81096c6d339bfad2a6b0f3ec988a6"
 dependencies = [
  "bytemuck",
  "itertools 0.12.1",
@@ -3159,7 +3159,7 @@ dependencies = [
 [[package]]
 name = "stwo-cairo-serialize"
 version = "0.1.0"
-source = "git+https://github.com/clealabs/stwo-cairo?branch=62c3c4a-fix-wasm#6aea139caf9956fdac1841efc1289346aeaf0fc0"
+source = "git+https://github.com/clealabs/stwo-cairo?branch=62c3c4a-fix-wasm-cpu#b6361a63d5c81096c6d339bfad2a6b0f3ec988a6"
 dependencies = [
  "starknet-ff",
  "stwo-cairo-serialize-derive",
@@ -3169,7 +3169,7 @@ dependencies = [
 [[package]]
 name = "stwo-cairo-serialize-derive"
 version = "0.1.0"
-source = "git+https://github.com/clealabs/stwo-cairo?branch=62c3c4a-fix-wasm#6aea139caf9956fdac1841efc1289346aeaf0fc0"
+source = "git+https://github.com/clealabs/stwo-cairo?branch=62c3c4a-fix-wasm-cpu#b6361a63d5c81096c6d339bfad2a6b0f3ec988a6"
 dependencies = [
  "quote",
  "syn 2.0.101",
@@ -3202,7 +3202,7 @@ dependencies = [
 [[package]]
 name = "stwo_cairo_prover"
 version = "0.1.0"
-source = "git+https://github.com/clealabs/stwo-cairo?branch=62c3c4a-fix-wasm#6aea139caf9956fdac1841efc1289346aeaf0fc0"
+source = "git+https://github.com/clealabs/stwo-cairo?branch=62c3c4a-fix-wasm-cpu#b6361a63d5c81096c6d339bfad2a6b0f3ec988a6"
 dependencies = [
  "cairo-air",
  "hex",
